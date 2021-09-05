@@ -1,5 +1,9 @@
 class QuestsController < ApplicationController
 
+  before_action(:authenticate_user!,only:[:new,:create])  #ログインしてる人だけ質問投稿ページに飛べる
+
+   before_action :set_q, only: [:index, :search] #検索機能
+
   def new
     @quest=Quest.new
   end
@@ -40,13 +44,6 @@ class QuestsController < ApplicationController
     @quests=Quest.where(is_solved:false)
   end
 
-  # def index_t
-    # @quests=Quest.all  find_byメソッド
-        #  if @quests.is_solved == true
-      
-    # end
-  # end
-
   def show
     @quest=Quest.find(params[:id])
   end
@@ -57,10 +54,20 @@ class QuestsController < ApplicationController
     redirect_to root_path
   end
 
+  def search
+    @results = @q.result
+  end
+
+
   private
 
-   def quest_params
-    params.require(:quest).permit(:title,:content,:is_solved)
-   end
+  def set_q
+    @q = Quest.ransack(params[:q])
+  end
+  
+  
+  def quest_params
+   params.require(:quest).permit(:title,:content,:is_solved)
+  end
 
 end

@@ -7,8 +7,11 @@
   <p>タイトル：<%= quest.title %></p>
   <p>内容：<%= quest.content %></p>
   <p>
+    <% if quest.is_solved == false && quest.user == current_user %>    　　<%# is_solved==false かつ　その質問を投稿したユーザーだけが”解決済”にできる  %>
     <%= link_to '未解決', controller: 'quests', action: 'make_solved', id: quest %>
-    <%# # <%= link_to "未解決", '/2/make_solved',method: :patch %>  
+   <% elsif quest.is_solved == false %>
+    未解決
+   <% end %>
   </p>
   <p>ユーザーネーム：<%= quest.user.name %></p>
   <% if quest.user == current_user %>

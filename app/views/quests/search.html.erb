@@ -1,0 +1,30 @@
+<h1>検索結果</h1>
+<table>
+  <thead>
+    <tr>
+      <th>タイトル</th>
+      <th>内容</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @results.each do |quest| %>
+      <tr>
+        <td><%= quest.title %></td>
+        <td><%= quest.content %></td>
+        <td>
+            <% if quest.is_solved == false && quest.user == current_user %>    　　<%# is_solved==false かつ　その質問を投稿したユーザーだけが”解決済”にできる  %>
+              <%= link_to '未解決', controller: 'quests', action: 'make_solved', id: quest %>
+            <% elsif quest.is_solved == false %>
+              未解決
+            <% else %> 
+              解決済 
+            <% end %>
+        </td>
+        <td><%= link_to '詳細', quest_path(quest) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '戻る', root_path %>

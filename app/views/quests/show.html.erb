@@ -1,5 +1,5 @@
 <% if @quest.user == current_user %>
-    <%= link_to "削除", quest_path(@quest), method: :delete %>
+    <%= link_to "削除", quest_path(@quest), method: :delete,data:{confirm: "本当に削除しますか？"} %>
 <% end %>
 
   <p>タイトル：<%= @quest.title %></p>
