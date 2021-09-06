@@ -1,0 +1,37 @@
+<% if @user == current_user %>
+    <%= link_to "削除", user_path(@user), method: :delete,data:{confirm: "本当に削除しますか？"} %>
+<% end %>
+<% if @user == current_user %>
+    <%= link_to "編集", edit_user_path(@user), method: :get %>
+<% end %>
+
+  <p>ニックネーム：<%= @user.name %></p>
+  <%= image_tag @user.image if @user.image.attached? %>
+
+
+<% if @user.name? %>
+  <h1><%= @user.name %>さんの過去の質問一覧</h1>
+<% else %>
+  <h1>名無しさんの過去の質問一覧</h1>
+<% end %>
+
+
+<% @quests.each do |quest| %>
+<div>
+  <p>タイトル：<%= quest.title %></p>
+  <p>内容：<%= quest.content %></p>
+  <p>
+   <% if quest.is_solved == false && quest.user == current_user %>    　　<%# is_solved==false かつ　その質問を投稿したユーザーだけが”解決済”にできる  %>
+    <%= link_to '未解決', controller: 'quests', action: 'make_solved', id: quest %>
+   <% elsif quest.is_solved == false %>
+    未解決
+   <% else %> 
+    解決済 
+   <% end %>
+  </p>
+  <% if quest.user == current_user %>
+   <p><%= link_to "質問編集", edit_quest_path(quest.id) %></p>
+  <% end %>
+  <p><%= link_to "質問詳細", quest_path(quest.id) %></p>
+</div>
+<% end %>  

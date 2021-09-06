@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   # patch 'quests/:id/make_solved' => 'quests#make_solved'
   devise_for :users
 
+  resources(:users,{only:[:show,:index,:edit,:update,:destroy]})
+
   resources(:quests,{only:[:new,:create,:show,:destroy,:edit,:update]}) do 
     member do
       get 'make_solved'

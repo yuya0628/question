@@ -1,0 +1,6 @@
+<% @users.each do |user| %>
+
+  <p>ニックネーム：<%= user.name %></p>
+
+   <p><%= link_to "詳細", user_path(user.id) %></p>
+<% end %>
