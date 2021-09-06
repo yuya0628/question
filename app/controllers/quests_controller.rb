@@ -9,10 +9,18 @@ class QuestsController < ApplicationController
   end
 
   def create
-    quest=Quest.new(quest_params)
-    quest.user_id = current_user.id
-    quest.save
-    redirect_to root_path
+    @quest=Quest.new(quest_params)
+    @quest.user_id = current_user.id
+
+     if @quest.save
+      User.all.each do |user|
+        QuestMailer.with(user: user, quest: @quest).creation_email.deliver_now
+      end  
+    #   QuestMailer.creation_email(@quest).deliver_now
+        redirect_to(root_path,notice:"質問『#{@quest.title}』の投稿が完了しました")
+     else
+      render(:new)
+     end  
   end
 
    def edit
