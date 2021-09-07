@@ -33,6 +33,7 @@
    <p><%= link_to "質問編集", edit_quest_path(quest.id) %></p>
   <% end %>
   <p><%= link_to "質問詳細", quest_path(quest.id) %></p>
+  <p><%= link_to "#{quest.quest_answers.count} 件の回答", quest_path(quest.id) %></p>
 
 </div>
 <% end %>

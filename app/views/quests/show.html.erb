@@ -6,3 +6,23 @@
   <p>内容：<%= @quest.content %></p>
   <p>ユーザーネーム：<%= @quest.user.name %></p>
   <p>投稿日時：<%= @quest.created_at.strftime('%Y/%m/%d') %></p>
+
+  <div>
+<p>回答件数：<%= @quest.quest_answers.count %></p>
+<% @quest.quest_answers.each do |quest_answer| %>
+  <%= quest_answer.user.name %>
+  <%= quest_answer.created_at.strftime('%Y/%m/%d') %><%= quest_answer.answer %>
+
+  <% if quest_answer.user == current_user %>
+  <div>
+    <%= link_to "削除", quest_quest_answer_path(quest_answer.quest, quest_answer), method: :delete %>
+  </div>
+  <% end %>
+<% end %>
+</div>
+<div>
+<%= form_with(model:[@quest, @quest_answer], local: true) do |f| %>
+  <%= f.text_area :answer, rows:'5',placeholder: "回答をここに" %>
+  <%= f.submit "送信する" %>
+<% end %>
+</div>

@@ -54,6 +54,7 @@ class QuestsController < ApplicationController
 
   def show
     @quest=Quest.find(params[:id])
+    @quest_answer=QuestAnswer.new
   end
 
   def destroy

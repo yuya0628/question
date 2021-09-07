@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     collection do
       get 'search'
     end
+
+    resources(:quest_answers,{only:[:create,:destroy]})
   end 
 
   resources(:users,{only:[:index,:show,:edit,:update]})
