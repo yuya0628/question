@@ -1,6 +1,6 @@
-<%= notice %>
+<p id="notice"><%= notice %></p>
 <li>
-  <%= link_to '投稿フォーム', new_quest_path %>
+  <%= link_to '投稿フォーム', new_quest_path,class:"btn btn-primary" %>
 </li>
 
       <h1>質問検索</h1>
@@ -15,25 +15,54 @@
 <%= link_to '解決済' ,'/quests/index_t' %>
 <%= link_to '未解決','/quests/index_f' %>
 
-<% @quests.each do |quest| %>
-<div>
-  <p>タイトル：<%= quest.title %></p>
-  <p>内容：<%= quest.content %></p>
-  <p>
-   <% if quest.is_solved == false && quest.user == current_user %>    　　<%# is_solved==false かつ　その質問を投稿したユーザーだけが”解決済”にできる  %>
-    <%= link_to '未解決', controller: 'quests', action: 'make_solved', id: quest %>
-   <% elsif quest.is_solved == false %>
-    未解決
-   <% else %> 
-    解決済 
-   <% end %>
-  </p>
-  <p>ユーザーネーム：<%= quest.user.name %></p>
-  <% if quest.user == current_user %>
-   <p><%= link_to "質問編集", edit_quest_path(quest.id) %></p>
-  <% end %>
-  <p><%= link_to "質問詳細", quest_path(quest.id) %></p>
-  <p><%= link_to "#{quest.quest_answers.count} 件の回答", quest_path(quest.id) %></p>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ユーザーネーム</th>
+      <th>タイトル</th>
+      <th>内容</th>
+      <th>状況</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <tbody>
+  　<% @quests.each do |quest| %>
+    <tr>
+      <th>
+      <% if quest.user.image.attached? %> 
+       <%= image_tag quest.user.image,class:"rounded-circle",widt:"50", height:"50" %>
+      <% else %>
+       <%= image_tag "no_image.jpeg",class:"rounded-circle",widt:"50", height:"50" %>
+      <% end %>
+      </th>
+      <th>
+      <% if quest.user.name? %>
+       <%= quest.user.name %>
+      <% else %>
+       名無しさん
+      <% end %> 
+      </th>
+      <th><%= quest.title %></th>
+      <th><%= quest.content %></th>
+      <th><%= link_to "#{quest.quest_answers.count} 件の回答", quest_path(quest.id) %></th>
+      <th>
+        <% if quest.is_solved == false && quest.user == current_user %>    　　<%# is_solved==false かつ　その質問を投稿したユーザーだけが”解決済”にできる  %>
+          <button type="button" class="btn btn-danger"><%= link_to '未解決', controller: 'quests', action: 'make_solved', id: quest %></button>
+        <% elsif quest.is_solved == false %>
+          <button type="button" class="btn btn-danger">未解決</button>
+        <% else %> 
+          <button type="button" class="btn btn-success">解決済</button>
+        <% end %>
+      </th>
+      <th>
+        <% if quest.user == current_user %>
+        <p><%= link_to "質問編集", edit_quest_path(quest.id) %></p>
+        <% end %>
+      </th>
+      <th><%= link_to "質問詳細", quest_path(quest.id) %></th>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
 
-</div>
-<% end %>

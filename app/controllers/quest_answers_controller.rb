@@ -5,8 +5,12 @@ class QuestAnswersController < ApplicationController
     @quest=Quest.find(params[:quest_id])
     quest_answer.quest_id=@quest.id
     quest_answer.user_id=current_user.id
-    quest_answer.save
-    redirect_to quest_path(@quest)
+    if quest_answer.save
+      QuestAnswerMailer.with(quest:@quest,quest_answer:quest_answer).creation_email.deliver_now
+      redirect_to(quest_path(@quest),{notice:"回答を送信しました"})
+    else
+      reder quest_path(@quest)
+    end  
   end
 
   def destroy
